@@ -1,0 +1,22 @@
+{
+    "name": "iamdual/browser",
+    "description": "Featured and simple HTTP request class.",
+    "homepage": "https://github.com/iamdual/browser",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Ekin Karadeniz",
+            "email": "imduual@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "iamdual\\": "src/"
+        }
+    }
+}
