@@ -432,7 +432,7 @@ class Browser {
 
         if ($this->request_proxy_address) {
             curl_setopt($this->curl, CURLOPT_PROXY, $this->request_proxy_address);
-            if ($this->request_proxy_auth) {
+            if ($this->request_proxy_auth && is_array($this->request_proxy_auth)) {
                 curl_setopt($this->curl, CURLOPT_PROXYUSERPWD, implode(":", $this->request_proxy_auth));
             }
         }
