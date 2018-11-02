@@ -20,7 +20,8 @@
 
 namespace iamdual;
 
-class Browser {
+class Browser
+{
 
     /**
      * @var void
@@ -154,7 +155,8 @@ class Browser {
      * @param array $defaults (optional)
      * @return $this
      */
-    function __construct($defaults = null) {
+    function __construct($defaults = null)
+    {
         if ($defaults !== null) {
             foreach ($defaults as $key => $value) {
                 $this->{'request_' . $key} = $value;
@@ -170,7 +172,8 @@ class Browser {
      * @param $url string
      * @return string
      */
-    public function get($url) {
+    public function get($url)
+    {
         $this->request_method = "GET";
         $this->request_url = $url;
         $this->request_data = null;
@@ -183,7 +186,8 @@ class Browser {
      * @param $data mixed (optional)
      * @return string
      */
-    public function post($url, $data = null) {
+    public function post($url, $data = null)
+    {
         $this->request_method = "POST";
         $this->request_url = $url;
         $this->request_data = $data;
@@ -196,7 +200,8 @@ class Browser {
      * @param $data mixed (optional)
      * @return string
      */
-    public function put($url, $data = null) {
+    public function put($url, $data = null)
+    {
         $this->request_method = "PUT";
         $this->request_url = $url;
         $this->request_data = $data;
@@ -209,7 +214,8 @@ class Browser {
      * @param $data mixed (optional)
      * @return string
      */
-    public function delete($url, $data = null) {
+    public function delete($url, $data = null)
+    {
         $this->request_method = "DELETE";
         $this->request_url = $url;
         $this->request_data = $data;
@@ -222,7 +228,8 @@ class Browser {
      * @param $data mixed (optional)
      * @return string
      */
-    public function patch($url, $data = null) {
+    public function patch($url, $data = null)
+    {
         $this->request_method = "PATCH";
         $this->request_url = $url;
         $this->request_data = $data;
@@ -234,7 +241,8 @@ class Browser {
      * @param $data mixed
      * @return $this
      */
-    public function json_data($data) {
+    public function json_data($data)
+    {
         if (is_array($data)) {
             $data = json_encode($data);
         }
@@ -251,7 +259,8 @@ class Browser {
      * @param $headers array
      * @return $this
      */
-    public function headers($headers) {
+    public function headers($headers)
+    {
         $this->request_headers = $headers;
         return $this;
     }
@@ -261,7 +270,8 @@ class Browser {
      * @param $referer string
      * @return $this
      */
-    public function referer($referer) {
+    public function referer($referer)
+    {
         $this->request_referer = $referer;
         return $this;
     }
@@ -271,7 +281,8 @@ class Browser {
      * @param $user_agent string
      * @return $this
      */
-    public function user_agent($user_agent) {
+    public function user_agent($user_agent)
+    {
         $this->request_user_agent = $user_agent;
         return $this;
     }
@@ -281,7 +292,8 @@ class Browser {
      * @param $timeout int
      * @return $this
      */
-    public function timeout($timeout) {
+    public function timeout($timeout)
+    {
         $this->request_timeout = $timeout;
         return $this;
     }
@@ -291,7 +303,8 @@ class Browser {
      * @param $option boolean
      * @return $this
      */
-    public function auto_redirect($option = true) {
+    public function auto_redirect($option = true)
+    {
         $this->request_auto_redirect = $option;
         return $this;
     }
@@ -302,7 +315,8 @@ class Browser {
      * @param $password string
      * @return $this
      */
-    public function http_auth($username, $password) {
+    public function http_auth($username, $password)
+    {
         $this->request_http_auth = array($username, $password);
         return $this;
     }
@@ -312,7 +326,8 @@ class Browser {
      * @param $option boolean
      * @return $this
      */
-    public function cookies_enabled($option = true) {
+    public function cookies_enabled($option = true)
+    {
         $this->request_cookies_enabled = $option;
         return $this;
     }
@@ -322,7 +337,8 @@ class Browser {
      * @param $filename string
      * @return $this
      */
-    public function cookie_file($filename) {
+    public function cookie_file($filename)
+    {
         $this->request_cookie_file = $filename;
         return $this;
     }
@@ -332,7 +348,8 @@ class Browser {
      * @param $data string
      * @return $this
      */
-    public function cookie($data) {
+    public function cookie($data)
+    {
         $this->request_cookie_data = $data;
         return $this;
     }
@@ -342,7 +359,8 @@ class Browser {
      * @param $filename string
      * @return $this
      */
-    public function cert_file($filename) {
+    public function cert_file($filename)
+    {
         $this->request_cert_file = $filename;
         return $this;
     }
@@ -354,7 +372,8 @@ class Browser {
      * @param $password string (optional)
      * @return $this
      */
-    public function proxy($address, $username = null, $password = null) {
+    public function proxy($address, $username = null, $password = null)
+    {
         $this->request_proxy_address = $address;
         if ($username) {
             $this->request_proxy_auth = array($username, $password);
@@ -368,7 +387,8 @@ class Browser {
      * @param $value mixed
      * @return $this
      */
-    public function set_opt($key, $value) {
+    public function set_opt($key, $value)
+    {
         $this->request_options[$key] = $value;
         return $this;
     }
@@ -377,7 +397,8 @@ class Browser {
      * Execute the curl
      * @return string
      */
-    private function execute() {
+    private function execute()
+    {
         if (!$this->request_url) {
             return null;
         }
@@ -464,7 +485,8 @@ class Browser {
         return $this->source;
     }
 
-    function __destruct() {
+    function __destruct()
+    {
         curl_close($this->curl);
     }
 }
