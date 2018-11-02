@@ -114,6 +114,12 @@ class Browser {
     public $source = null;
 
     /**
+     * The JSON object if response is JSON
+     * @var object
+     */
+    public $json = null;
+
+    /**
      * The response code
      * @var int
      */
@@ -450,6 +456,10 @@ class Browser {
         $this->content_type = $this->info["content_type"];
         $this->url = $this->info["url"];
         $this->total_time = $this->info["total_time"];
+
+        if ($this->content_type == "application/json") {
+            $this->json = json_decode($this->source);
+        }
 
         return $this->source;
     }

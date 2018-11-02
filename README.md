@@ -88,6 +88,7 @@ More examples in the "[examples](/examples)" directory.
 | `$content_type` | Response content type | string |
 | `$url` | Response URL | string |
 | `$source` | Response source | string |
+| `$json` | Parsed JSON object | object |
 | `$total_time` | Total request time | int |
 | `$info` | Response info | array |
 
