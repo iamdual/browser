@@ -114,19 +114,14 @@ class Browser
     private $request_options = array();
 
     /**
-     * @var bool
+     * @var string
      */
-    private $request_output = false;
+    private $request_output_path = null;
 
     /**
      * @var string
      */
     private $request_output_filename = null;
-
-    /**
-     * @var string
-     */
-    private $request_output_path = null;
 
     /**
      * The response source
@@ -411,13 +406,12 @@ class Browser
 
     /**
      * Set the output to a file
-     * @param $path string (Optional)
+     * @param $path string
      * @param $filename string (Optional)
      * @return $this
      */
-    public function output($path = null, $filename = null)
+    public function output($path, $filename = null)
     {
-        $this->request_output = true;
         $this->request_output_path = $path;
         $this->request_output_filename = $filename;
         return $this;
@@ -509,14 +503,11 @@ class Browser
             }
         }
 
-        if ($this->request_output) {
+        if ($this->request_output_path) {
             if (! $this->request_output_filename) {
                 $this->request_output_filename = basename($this->request_url);
             }
-            if ($this->request_output_path) {
-                $this->request_output_filename = $this->request_output_path . "/" . $this->request_output_filename;
-            }
-            $fp = fopen($this->request_output_filename, "w+");
+            $fp = fopen($this->request_output_path . "/" . $this->request_output_filename, "w+");
             curl_setopt($this->curl, CURLOPT_FILE, $fp);
         }
 
