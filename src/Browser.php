@@ -104,9 +104,29 @@ class Browser
     private $request_proxy_auth = array();
 
     /**
+     * @var int
+     */
+    private $request_proxy_type = null;
+
+    /**
      * @var array
      */
     private $request_options = array();
+
+    /**
+     * @var bool
+     */
+    private $request_output = false;
+
+    /**
+     * @var string
+     */
+    private $request_output_filename = null;
+
+    /**
+     * @var string
+     */
+    private $request_output_path = null;
 
     /**
      * The response source
@@ -345,12 +365,16 @@ class Browser
 
     /**
      * Set cookie data
-     * @param $data string
+     * @param $data mixed
      * @return $this
      */
     public function cookie($data)
     {
-        $this->request_cookie_data = $data;
+        if (is_array($data)) {
+            $this->request_cookie_data = http_build_query($data, "", ";");
+        } else {
+            $this->request_cookie_data = $data;
+        }
         return $this;
     }
 
@@ -370,14 +394,32 @@ class Browser
      * @param $address string
      * @param $username string (optional)
      * @param $password string (optional)
+     * @param $type int (optional)
      * @return $this
      */
-    public function proxy($address, $username = null, $password = null)
+    public function proxy($address, $username = null, $password = null, $type = null)
     {
         $this->request_proxy_address = $address;
         if ($username) {
             $this->request_proxy_auth = array($username, $password);
         }
+        if ($type) {
+            $this->request_proxy_type = $type;
+        }
+        return $this;
+    }
+
+    /**
+     * Set the output to a file
+     * @param $filename string (Optional)
+     * @param $path string (Optional)
+     * @return $this
+     */
+    public function output($filename = null, $path = null)
+    {
+        $this->request_output = true;
+        $this->request_output_filename = $filename;
+        $this->request_output_path = $path;
         return $this;
     }
 
@@ -399,7 +441,7 @@ class Browser
      */
     private function execute()
     {
-        if (!$this->request_url) {
+        if (! $this->request_url) {
             return null;
         }
 
@@ -462,6 +504,20 @@ class Browser
             if ($this->request_proxy_auth && is_array($this->request_proxy_auth)) {
                 curl_setopt($this->curl, CURLOPT_PROXYUSERPWD, implode(":", $this->request_proxy_auth));
             }
+            if ($this->request_proxy_type) {
+                curl_setopt($this->curl, CURLOPT_PROXYTYPE, $this->request_proxy_type);
+            }
+        }
+
+        if ($this->request_output) {
+            if (! $this->request_output_filename) {
+                $this->request_output_filename = basename($this->request_url);
+            }
+            if ($this->request_output_path) {
+                $this->request_output_filename = $this->request_output_path . "/" . $this->request_output_filename;
+            }
+            $fp = fopen($this->request_output_filename, "w+");
+            curl_setopt($this->curl, CURLOPT_FILE, $fp);
         }
 
         if ($this->request_options) {
@@ -478,8 +534,12 @@ class Browser
         $this->url = $this->info["url"];
         $this->total_time = $this->info["total_time"];
 
-        if ($this->content_type == "application/json") {
+        if (strpos("application/json", $this->content_type) !== false) {
             $this->json = json_decode($this->source);
+        }
+
+        if (isset($fp)) {
+            fclose($fp);
         }
 
         return $this->source;
