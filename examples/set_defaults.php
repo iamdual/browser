@@ -12,7 +12,7 @@ $defaults = array(
     "http_auth" => array("username", "password"),
     "cookies_enabled" => false,
     "cookie_file" => "browser.txt",
-    "cookie_data" => "foo=bar;iam=dual",
+    "cookie_data" => array("foo" => "bar", "iam" => "dual"),
     "cert_file" => "example.crt",
     "proxy_address" => "http://127.0.0.1:8080",
     "proxy_auth" => array("username", "password")

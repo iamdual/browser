@@ -365,11 +365,7 @@ class Browser
      */
     public function cookie($data)
     {
-        if (is_array($data)) {
-            $this->request_cookie_data = http_build_query($data, "", ";");
-        } else {
-            $this->request_cookie_data = $data;
-        }
+        $this->request_cookie_data = $data;
         return $this;
     }
 
@@ -469,6 +465,9 @@ class Browser
         }
 
         if ($this->request_cookie_data) {
+            if (is_array($this->request_cookie_data)) {
+                $this->request_cookie_data = http_build_query($this->request_cookie_data, "", ";");
+            }
             curl_setopt($this->curl, CURLOPT_COOKIE, $this->request_cookie_data);
         }
 
