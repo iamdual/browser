@@ -67,7 +67,7 @@ More examples in the "[examples](/examples)" directory.
 | `http_auth(string $username, string $password)` | Set HTTP auth credentials |
 | `cookies_enabled(boolean $option)` | Set cookies enabled option |
 | `cookie_file(string $filename)` | Set cookie filename |
-| `cookie(string $data)` | Set raw cookie data |
+| `cookie(mixed $data)` | Set raw cookie data |
 | `cert_file(string $filename)` | Set certificate file |
 | `proxy(string $address, string $username, string $password)` | Set proxy address and/or auth credentials |
 | `set_opt(int $key, mixed $value)` | Set custom curl option |
