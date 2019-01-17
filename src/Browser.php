@@ -411,15 +411,15 @@ class Browser
 
     /**
      * Set the output to a file
-     * @param $filename string (Optional)
      * @param $path string (Optional)
+     * @param $filename string (Optional)
      * @return $this
      */
-    public function output($filename = null, $path = null)
+    public function output($path = null, $filename = null)
     {
         $this->request_output = true;
-        $this->request_output_filename = $filename;
         $this->request_output_path = $path;
+        $this->request_output_filename = $filename;
         return $this;
     }
 
