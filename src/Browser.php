@@ -355,7 +355,7 @@ class Browser
     }
 
     /**
-     * Set auto redirect option (default: true)
+     * Set auto redirect option
      * @param $option boolean
      * @return $this
      */
@@ -366,7 +366,7 @@ class Browser
     }
 
     /**
-     * Set insecure option (default: false)
+     * Set insecure option
      * @param $option boolean
      * @return $this
      */
@@ -389,7 +389,7 @@ class Browser
     }
 
     /**
-     * Set cookies enabled (default: true)
+     * Set cookies enabled
      * @param $option boolean
      * @return $this
      */
