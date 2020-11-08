@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2018, Ekin Karadeniz <imduual@gmail.com>
+ * Copyright 2020, Ekin Karadeniz <imduual@gmail.com>
  *
  * Documentation:
  * https://github.com/iamdual/browser
@@ -166,6 +166,12 @@ class Browser
     public $info = array();
 
     /**
+     * The curl error
+     * @var string
+     */
+    public $error = null;
+
+    /**
      * Setting default request variables
      * @param array $defaults (optional)
      * @return $this
@@ -261,11 +267,9 @@ class Browser
         if (is_array($data)) {
             $data = json_encode($data);
         }
-        $this->set_opt(CURLOPT_HTTPHEADER, array(
-            "Content-Type: application/json",
-            "Content-Length: " . strlen($data)
-        ));
         $this->set_opt(CURLOPT_POSTFIELDS, $data);
+        $this->header("Content-Type: application/json");
+        $this->header("Content-Length: " . strlen($data));
         return $this;
     }
 
@@ -277,6 +281,17 @@ class Browser
     public function headers($headers)
     {
         $this->request_headers = $headers;
+        return $this;
+    }
+
+    /**
+     * Append a request header
+     * @param $header string
+     * @return $this
+     */
+    public function header($header)
+    {
+        $this->request_headers[] = $header;
         return $this;
     }
 
@@ -431,7 +446,7 @@ class Browser
      */
     private function execute()
     {
-        if (! $this->request_url) {
+        if (!$this->request_url) {
             return null;
         }
 
@@ -503,7 +518,7 @@ class Browser
         }
 
         if ($this->request_output_path) {
-            if (! $this->request_output_filename) {
+            if (!$this->request_output_filename) {
                 $this->request_output_filename = basename($this->request_url);
             }
             $fp = fopen($this->request_output_path . "/" . $this->request_output_filename, "w+");
@@ -524,12 +539,16 @@ class Browser
         $this->url = $this->info["url"];
         $this->total_time = $this->info["total_time"];
 
-        if (strpos("application/json", $this->content_type) !== false) {
+        if (strcasecmp($this->content_type, "application/json") == 0) {
             $this->json = json_decode($this->source);
         }
 
         if (isset($fp)) {
             fclose($fp);
+        }
+
+        if (curl_errno($this->curl)) {
+            $this->error = curl_error($this->curl);
         }
 
         return $this->source;

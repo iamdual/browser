@@ -59,11 +59,12 @@ More examples in the "[examples](/examples)" directory.
 ### Methods
 | Name | Description |
 |---|---|
-| `headers(array $headers)` | Set request headers |
 | `referer(string $referer)` | Set referer URL |
 | `user_agent(string $user_agent)` | Set user agent |
 | `timeout(int $timeout)` | Set timeout |
 | `auto_redirect(boolean $option)` | Set auto redirect option |
+| `headers(array $headers)` | Set request headers |
+| `header(string $header)` | Append a request header |
 | `http_auth(string $username, string $password)` | Set HTTP auth credentials |
 | `cookies_enabled(boolean $option)` | Set cookies enabled option |
 | `cookie_file(string $filename)` | Set cookie filename |
@@ -91,6 +92,7 @@ More examples in the "[examples](/examples)" directory.
 | `$json` | Parsed JSON object | object |
 | `$total_time` | Total request time | int |
 | `$info` | Response info | array |
+| `$error` | Response error | string |
 
 ### Notes
 The [`curl extension`](https://php.net/manual/en/book.curl.php) must be installed on the server.
