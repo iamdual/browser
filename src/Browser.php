@@ -221,10 +221,7 @@ class Browser
      */
     public function get($url)
     {
-        $this->request_method = "GET";
-        $this->request_url = $url;
-        $this->request_data = null;
-        return $this->execute();
+        return $this->request("GET", $url, null);
     }
 
     /**
@@ -235,10 +232,7 @@ class Browser
      */
     public function post($url, $data = null)
     {
-        $this->request_method = "POST";
-        $this->request_url = $url;
-        $this->request_data = $data;
-        return $this->execute();
+        return $this->request("POST", $url, $data);
     }
 
     /**
@@ -249,10 +243,7 @@ class Browser
      */
     public function put($url, $data = null)
     {
-        $this->request_method = "PUT";
-        $this->request_url = $url;
-        $this->request_data = $data;
-        return $this->execute();
+        return $this->request("PUT", $url, $data);
     }
 
     /**
@@ -263,10 +254,7 @@ class Browser
      */
     public function delete($url, $data = null)
     {
-        $this->request_method = "DELETE";
-        $this->request_url = $url;
-        $this->request_data = $data;
-        return $this->execute();
+        return $this->request("DELETE", $url, $data);
     }
 
     /**
@@ -277,10 +265,7 @@ class Browser
      */
     public function patch($url, $data = null)
     {
-        $this->request_method = "PATCH";
-        $this->request_url = $url;
-        $this->request_data = $data;
-        return $this->execute();
+        return $this->request("PATCH", $url, $data);
     }
 
     /**
@@ -370,7 +355,7 @@ class Browser
      * @param $option boolean
      * @return $this
      */
-    public function insecure($option = false)
+    public function insecure($option = true)
     {
         $this->request_insecure = $option;
         return $this;

@@ -57,6 +57,8 @@ echo $browser->get("https://httpbin.org/get");
 More examples in the "[examples](/examples)" directory.
 
 ### Methods
+
+#### Options
 | Name | Description |
 |---|---|
 | `referer(string $referer)` | Set referer URL |
@@ -75,26 +77,34 @@ More examples in the "[examples](/examples)" directory.
 | `auto_redirect(boolean $option)` | Set auto redirect option |
 | `insecure(boolean $option)` | Set insecure option |
 
+#### Requests
+After a request, these properties will return needed values.
+
 | Name | Description | Return |
 |---|---|---|
+| `request(string $method, string $url, mixed $data)` | Send a custom request | string |
 | `get(string $url)` | Send GET request | string |
 | `post(string $url, mixed $data)` | Send POST request | string |
 | `put(string $url, mixed $data)` | Send PUT request | string |
 | `delete(string $url, mixed $data)` | Send DELETE request | string |
 | `patch(string $url, mixed $data)` | Send PATCH request | string |
 
-### Variables
+### Properties
 | Name | Description | Return |
 |---|---|---|
 | `$code` | HTTP response code | int |
 | `$content_type` | Response content type | string |
-| `$url` | Response URL | string |
 | `$headers` | Response headers | array |
 | `$source` | Response source | string |
-| `$json` | Parsed JSON object | object |
-| `$total_time` | Total request time | int |
+| `$url` | Response URL | string |
 | `$info` | Response info | array |
-| `$error` | Response error | string |
+| `$error`<sup>\[1\]</sup> | Response error | mixed |
+| `$total_time` | Total request time | int |
+| `$json`<sup>\[2\]</sup> | Parsed JSON object | mixed |
+
+
+* \[1\] It returns the error description in string, otherwise it's null.
+* \[2\] If `application/json` is the response type, it returns the JSON object, otherwise it's null.
 
 ### Notes
 The [`curl extension`](https://php.net/manual/en/book.curl.php) must be installed on the server.
