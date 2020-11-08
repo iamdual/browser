@@ -69,6 +69,11 @@ class Browser
     private $request_auto_redirect = true;
 
     /**
+     * @var boolean
+     */
+    private $request_insecure = false;
+
+    /**
      * @var array
      */
     private $request_http_auth = array();
@@ -340,6 +345,17 @@ class Browser
     }
 
     /**
+     * Set insecure option
+     * @param $option boolean
+     * @return $this
+     */
+    public function insecure($option = true)
+    {
+        $this->request_insecure = $option;
+        return $this;
+    }
+
+    /**
      * Set HTTP auth credentials
      * @param $username string
      * @param $password string
@@ -454,10 +470,18 @@ class Browser
         curl_setopt($this->curl, CURLOPT_URL, $this->request_url);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $this->request_method);
 
-        if ($this->request_cert_file === null) {
-            $this->request_cert_file = __DIR__ . "/ca-bundle.crt";
+        if ($this->request_insecure === true) {
+            curl_setopt($this->curl,CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($this->curl,CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($this->curl, CURLOPT_CAINFO, false);
+        } else {
+            curl_setopt($this->curl,CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($this->curl,CURLOPT_SSL_VERIFYHOST, 2);
+            if ($this->request_cert_file === null) {
+                $this->request_cert_file = __DIR__ . "/ca-bundle.crt";
+            }
+            curl_setopt($this->curl, CURLOPT_CAINFO, $this->request_cert_file);
         }
-        curl_setopt($this->curl, CURLOPT_CAINFO, $this->request_cert_file);
 
         if ($this->request_data) {
             if (is_array($this->request_data)) {
