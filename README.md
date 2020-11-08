@@ -78,8 +78,6 @@ More examples in the "[examples](/examples)" directory.
 | `insecure(boolean $option)` | Set insecure option |
 
 #### Requests
-After a request, these properties will return needed values.
-
 | Name | Description | Return |
 |---|---|---|
 | `request(string $method, string $url, mixed $data)` | Send a custom request | string |
@@ -90,6 +88,8 @@ After a request, these properties will return needed values.
 | `patch(string $url, mixed $data)` | Send PATCH request | string |
 
 ### Properties
+After a request, these properties will return needed values.
+
 | Name | Description | Return |
 |---|---|---|
 | `$code` | HTTP response code | int |
