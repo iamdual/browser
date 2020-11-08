@@ -89,6 +89,7 @@ More examples in the "[examples](/examples)" directory.
 | `$code` | HTTP response code | int |
 | `$content_type` | Response content type | string |
 | `$url` | Response URL | string |
+| `$headers` | Response headers | array |
 | `$source` | Response source | string |
 | `$json` | Parsed JSON object | object |
 | `$total_time` | Total request time | int |

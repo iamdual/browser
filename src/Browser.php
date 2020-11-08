@@ -129,6 +129,12 @@ class Browser
     private $request_output_filename = null;
 
     /**
+     * Response headers
+     * @var array
+     */
+    public $headers = array();
+
+    /**
      * The response source
      * @var string
      */
@@ -191,6 +197,21 @@ class Browser
 
         $this->curl = curl_init();
         return $this;
+    }
+
+    /**
+     * Custom request
+     * @param $method string
+     * @param $url string
+     * @param $data mixed (optional)
+     * @return string
+     */
+    public function request($method, $url, $data = null)
+    {
+        $this->request_method = $method;
+        $this->request_url = $url;
+        $this->request_data = $data;
+        return $this->execute();
     }
 
     /**
@@ -334,7 +355,7 @@ class Browser
     }
 
     /**
-     * Set auto redirect option
+     * Set auto redirect option (default: true)
      * @param $option boolean
      * @return $this
      */
@@ -345,11 +366,11 @@ class Browser
     }
 
     /**
-     * Set insecure option
+     * Set insecure option (default: false)
      * @param $option boolean
      * @return $this
      */
-    public function insecure($option = true)
+    public function insecure($option = false)
     {
         $this->request_insecure = $option;
         return $this;
@@ -368,7 +389,7 @@ class Browser
     }
 
     /**
-     * Set cookies enabled
+     * Set cookies enabled (default: true)
      * @param $option boolean
      * @return $this
      */
@@ -554,6 +575,16 @@ class Browser
                 curl_setopt($this->curl, $key, $value);
             }
         }
+
+        curl_setopt($this->curl, CURLOPT_HEADERFUNCTION,
+            function($curl, $header_line) {
+                $header = explode(":", $header_line, 2);
+                if (isset($header[1])) {
+                    $this->headers[trim($header[0])] = trim($header[1]);
+                }
+                return strlen($header_line);
+            }
+        );
 
         $this->source = curl_exec($this->curl);
         $this->info = curl_getinfo($this->curl);
