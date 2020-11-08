@@ -62,17 +62,18 @@ More examples in the "[examples](/examples)" directory.
 | `referer(string $referer)` | Set referer URL |
 | `user_agent(string $user_agent)` | Set user agent |
 | `timeout(int $timeout)` | Set timeout |
-| `auto_redirect(boolean $option)` | Set auto redirect option |
 | `headers(array $headers)` | Set request headers |
 | `header(string $header)` | Append a request header |
 | `http_auth(string $username, string $password)` | Set HTTP auth credentials |
-| `cookies_enabled(boolean $option)` | Set cookies enabled option |
+| `cookies_enabled(boolean $option)` | Set cookies enabled option (default: false) |
 | `cookie_file(string $filename)` | Set cookie filename |
 | `cookie(mixed $data)` | Set raw cookie data |
 | `cert_file(string $filename)` | Set certificate file |
 | `proxy(string $address, string $username, string $password)` | Set proxy address and/or auth credentials |
 | `set_opt(int $key, mixed $value)` | Set custom curl option |
 | `json_data(mixed $data)` | Set JSON data |
+| `auto_redirect(boolean $option)` | Set auto redirect option (default: true) |
+| `insecure(boolean $option)` | Set insecure option (default: false) |
 
 | Name | Description | Return |
 |---|---|---|
