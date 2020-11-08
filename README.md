@@ -72,8 +72,8 @@ More examples in the "[examples](/examples)" directory.
 | `proxy(string $address, string $username, string $password)` | Set proxy address and/or auth credentials |
 | `set_opt(int $key, mixed $value)` | Set custom curl option |
 | `json_data(mixed $data)` | Set JSON data |
-| `auto_redirect(boolean $option)` | Set auto redirect option (default: true) |
-| `insecure(boolean $option)` | Set insecure option (default: false) |
+| `auto_redirect(boolean $option)` | Set auto redirect option |
+| `insecure(boolean $option)` | Set insecure option |
 
 | Name | Description | Return |
 |---|---|---|
