@@ -65,7 +65,7 @@ More examples in the "[examples](/examples)" directory.
 | `headers(array $headers)` | Set request headers |
 | `header(string $header)` | Append a request header |
 | `http_auth(string $username, string $password)` | Set HTTP auth credentials |
-| `cookies_enabled(boolean $option)` | Set cookies enabled option (default: true) |
+| `cookies_enabled(boolean $option)` | Set cookies enabled option |
 | `cookie_file(string $filename)` | Set cookie filename |
 | `cookie(mixed $data)` | Set raw cookie data |
 | `cert_file(string $filename)` | Set certificate file |
