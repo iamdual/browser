@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2020, Ekin Karadeniz <imduual@gmail.com>
+ * Copyright 2020, Ekin Karadeniz <iamdual@protonmail.com>
  *
  * Documentation:
  * https://github.com/iamdual/browser
@@ -477,12 +477,12 @@ class Browser
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, $this->request_method);
 
         if ($this->request_insecure === true) {
-            curl_setopt($this->curl,CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($this->curl,CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($this->curl, CURLOPT_CAINFO, false);
         } else {
-            curl_setopt($this->curl,CURLOPT_SSL_VERIFYPEER, true);
-            curl_setopt($this->curl,CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, 2);
             if ($this->request_cert_file === null) {
                 $this->request_cert_file = __DIR__ . "/ca-bundle.crt";
             }
@@ -583,14 +583,14 @@ class Browser
             $this->json = json_decode($this->source);
         }
 
-        if (isset($fp)) {
-            fclose($fp);
-        }
-
         if (curl_errno($this->curl)) {
             $this->error = curl_error($this->curl);
         }
-
+        
+        if (isset($fp)) {
+            fclose($fp);
+        }
+        
         return $this->source;
     }
 
