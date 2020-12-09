@@ -1,5 +1,11 @@
 <?php
-require __DIR__ . '/../src/Browser.php';
+require __DIR__ . '/vendor/autoload.php';
 
-$browser = new \iamdual\Browser();
-echo $browser->get("https://httpbin.org/get");
+use Iamdual\Browser\Client;
+
+try {
+    $result = Client::create()->get("https://httpbin.org");
+    var_dump($result);
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}

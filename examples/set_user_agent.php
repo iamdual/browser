@@ -1,8 +1,14 @@
 <?php
-require __DIR__ . '/../src/Browser.php';
+require __DIR__ . '/vendor/autoload.php';
 
-use \iamdual\Browser;
+use Iamdual\Browser\Client;
 
-$browser = new Browser();
-$browser->user_agent("Hello Browser/1.0");
-echo $browser->get("https://httpbin.org/get");
+try {
+    $result = Client::create()
+        ->userAgent('Unicorn/1.0')
+        ->get("http://httpbin.org/headers");
+
+    echo $result->json->headers->{"User-Agent"};
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
