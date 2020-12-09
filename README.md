@@ -3,7 +3,7 @@ Featured and simple HTTP request class for PHP 5.4+
 
 ### Installing
 ```
-composer require iamdual/browser
+composer require iamdual/browser:^0.1.8
 ```
 
 ### Examples
