@@ -18,6 +18,7 @@ class Native extends Provider
         $this->result = new Result();
 
         $http_params = [];
+        $http_params["ignore_errors"] = 1;
         $http_params["method"] = $this->request_method;
 
         if ($this->request_content_type) {
@@ -63,9 +64,7 @@ class Native extends Provider
             $http_params["timeout"] = $this->request_timeout;
         }
 
-        $context = stream_context_create([
-            "http" => $http_params,
-        ]);
+        $context = stream_context_create(["http" => $http_params]);
 
         $this->result->body = file_get_contents($this->request_url, false, $context);
         if ($this->result->body === false) {
