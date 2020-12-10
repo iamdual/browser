@@ -44,6 +44,8 @@ More examples in the "[examples](/examples)" directory.
 | `put(string $url, mixed $data)` | Send PUT request | Result |
 | `delete(string $url, mixed $data)` | Send DELETE request | Result |
 | `patch(string $url, mixed $data)` | Send PATCH request | Result |
+| `head(string $url)` | Send HEAD request | Result |
+| `options(string $url)` | Send OPTIONS request | Result |
 
 ### Properties
 After a request, these properties will return from `Result` object.
