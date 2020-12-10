@@ -82,17 +82,23 @@ class Native extends Provider
                 if (isset($header[1])) {
                     $header_key = strtolower(trim($header[0]));
                     $header_val = trim($header[1]);
-                    $this->result->headers[$header_key] = $header_val;
 
                     if ($header_key === "content-type") {
                         $header_val = explode(";", $header_val, 2);
-                        $this->result->content_type = trim($header_val[0]);
+                        $header_val = trim($header_val[0]);
+                        $this->result->content_type = $header_val;
                     }
+
+                    $this->result->headers[$header_key] = $header_val;
                 }
             }
         }
 
-        $this->result->url = $this->request_url;
+        if (isset($this->result->headers["location"])) {
+            $this->result->url = $this->result->headers["location"];
+        } else {
+            $this->result->url = $this->request_url;
+        }
 
         if (strcasecmp($this->result->content_type, "application/json") == 0) {
             $this->result->json = json_decode($this->result->body);

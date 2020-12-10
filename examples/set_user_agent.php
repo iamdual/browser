@@ -5,7 +5,7 @@ use Iamdual\Browser\Client;
 
 try {
     $result = Client::create()
-        ->userAgent('Unicorn/1.0')
+        ->userAgent("Unicorn/1.0")
         ->get("http://httpbin.org/headers");
 
     echo $result->json->headers->{"User-Agent"};

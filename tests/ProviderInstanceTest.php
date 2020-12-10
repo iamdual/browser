@@ -9,7 +9,6 @@ final class ProviderInstanceTest extends TestCase
 {
     /**
      * @covers \Iamdual\Browser\Client
-     * @throws \Iamdual\Browser\Exception\ProviderNotFoundException
      */
     public function testNativeProvider(): void
     {
@@ -21,7 +20,6 @@ final class ProviderInstanceTest extends TestCase
 
     /**
      * @covers \Iamdual\Browser\Client
-     * @throws \Iamdual\Browser\Exception\ProviderNotFoundException
      */
     public function testCurlProvider(): void
     {

@@ -7,12 +7,11 @@ final class JSONTest extends TestCase
 {
     /**
      * @covers \Iamdual\Browser\Client
-     * @throws \Iamdual\Browser\Exception\ProviderNotFoundException
      */
     public function testJSONNative(): void
     {
         $result = Client::create(null, Client::PROVIDER_NATIVE)
-            ->json(["hello" => "world", "iam" => "dual"])
+            ->json(["hello" => "world", "user_id" => "3048763"])
             ->post("https://httpbin.org/post");
 
         $this->assertEquals(
@@ -20,17 +19,16 @@ final class JSONTest extends TestCase
             $result->json->headers->{"Content-Type"}
         );
         $this->assertEquals("world", $result->json->json->hello);
-        $this->assertEquals("dual", $result->json->json->iam);
+        $this->assertEquals("3048763", $result->json->json->user_id);
     }
 
     /**
      * @covers \Iamdual\Browser\Client
-     * @throws \Iamdual\Browser\Exception\ProviderNotFoundException
      */
     public function testJSONCurl(): void
     {
         $result = Client::create(null, Client::PROVIDER_CURL)
-            ->json(["hello" => "world", "iam" => "dual"])
+            ->json(["hello" => "world", "user_id" => "3048763"])
             ->post("https://httpbin.org/post");
 
         $this->assertEquals(
@@ -39,6 +37,6 @@ final class JSONTest extends TestCase
         );
 
         $this->assertEquals("world", $result->json->json->hello);
-        $this->assertEquals("dual", $result->json->json->iam);
+        $this->assertEquals("3048763", $result->json->json->user_id);
     }
 }

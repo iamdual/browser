@@ -5,7 +5,7 @@ use Iamdual\Browser\Client;
 
 try {
     $client = Client::create(null, Client::PROVIDER_NATIVE);
-    $client->json(["hello" => "world", "iam" => "dual"]);
+    $client->json(["hello" => "world", "user_id" => "3048763"]);
     $result = $client->post("https://httpbin.org/post");
     var_dump($result);
 } catch (\Exception $e) {

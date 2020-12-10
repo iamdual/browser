@@ -76,6 +76,13 @@ class Curl extends Provider
                 if (isset($header[1])) {
                     $header_key = strtolower(trim($header[0]));
                     $header_val = trim($header[1]);
+
+                    if ($header_key === "content-type") {
+                        $header_val = explode(";", $header_val, 2);
+                        $header_val = trim($header_val[0]);
+                        $this->result->content_type = $header_val;
+                    }
+
                     $this->result->headers[$header_key] = $header_val;
                 }
                 return strlen($header_line);
@@ -89,7 +96,9 @@ class Curl extends Provider
 
         $curl_info = curl_getinfo($curl);
         $this->result->code = $curl_info["http_code"];
-        $this->result->content_type = $curl_info["content_type"];
+        if (!$this->result->content_type) {
+            $this->result->content_type = $curl_info["content_type"];
+        }
         $this->result->url = $curl_info["url"];
 
         if (strcasecmp($this->result->content_type, "application/json") == 0) {
