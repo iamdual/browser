@@ -264,11 +264,16 @@ abstract class Provider
      */
     public function request(string $method, string $url, $data = null): Result
     {
+        if (!$method || !$url) {
+            throw new InvalidParameterException("No method or URL entered.");
+        }
+
         $this->request_method = $method;
         $this->request_url = $url;
         if ($data !== null) {
             $this->request_data = $data;
         }
+
         return $this->execute();
     }
 
