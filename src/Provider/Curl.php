@@ -31,15 +31,15 @@ class Curl extends Provider
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         }
 
+        if ($this->request_content_type) {
+            $this->header("Content-Type: " . $this->request_content_type);
+        }
+
         if ($this->request_data) {
             if (is_array($this->request_data)) {
                 $this->request_data = http_build_query($this->request_data);
             }
             curl_setopt($curl, CURLOPT_POSTFIELDS, $this->request_data);
-        }
-
-        if ($this->request_content_type) {
-            $this->header("Content-Type: " . $this->request_content_type);
         }
 
         if ($this->request_cookie_data) {
@@ -83,6 +83,10 @@ class Curl extends Provider
         );
 
         $this->result->body = curl_exec($curl);
+        if (curl_errno($curl)) {
+            throw new ProviderErrorException(curl_error($curl));
+        }
+
         $curl_info = curl_getinfo($curl);
         $this->result->code = $curl_info["http_code"];
         $this->result->content_type = $curl_info["content_type"];
@@ -90,10 +94,6 @@ class Curl extends Provider
 
         if (strcasecmp($this->result->content_type, "application/json") == 0) {
             $this->result->json = json_decode($this->result->body);
-        }
-
-        if (curl_errno($curl)) {
-            throw new ProviderErrorException(curl_error($curl));
         }
 
         curl_close($curl);

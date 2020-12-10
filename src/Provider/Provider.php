@@ -45,11 +45,6 @@ abstract class Provider
     protected $request_content_type = null;
 
     /**
-     * @var float
-     */
-    protected $request_timeout = 10.0;
-
-    /**
      * @var string
      */
     protected $request_referer = null;
@@ -58,6 +53,11 @@ abstract class Provider
      * @var mixed
      */
     protected $request_cookie_data = null;
+
+    /**
+     * @var float
+     */
+    protected $request_timeout = 10.0;
 
     /**
      * @var bool
@@ -124,6 +124,26 @@ abstract class Provider
     public function contentType(string $type)
     {
         $this->request_content_type = $type;
+        return $this;
+    }
+
+    /**
+     * @param string $referer
+     * @return $this
+     */
+    public function referer(string $referer)
+    {
+        $this->request_referer = $referer;
+        return $this;
+    }
+
+    /**
+     * @param mixed $data
+     * @return $this
+     */
+    public function cookie($data)
+    {
+        $this->request_cookie_data = $data;
         return $this;
     }
 

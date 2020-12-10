@@ -20,16 +20,20 @@ class Native extends Provider
         $http_params = [];
         $http_params["method"] = $this->request_method;
 
+        if ($this->request_content_type) {
+            $this->header("Content-Type: " . $this->request_content_type);
+        }
+
         if ($this->request_data) {
             if (is_array($this->request_data)) {
                 $this->request_data = http_build_query($this->request_data);
             }
             $http_params["content"] = $this->request_data;
-            $this->header("Content-Length: " . strlen($this->request_data));
-        }
 
-        if ($this->request_content_type) {
-            $this->header("Content-Type: " . $this->request_content_type);
+            if (!$this->request_content_type) {
+                $this->header("Content-Type: application/x-www-form-urlencoded");
+            }
+            $this->header("Content-Length: " . strlen($this->request_data));
         }
 
         if ($this->request_cookie_data) {
