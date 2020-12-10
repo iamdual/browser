@@ -1,7 +1,6 @@
 <?php
 
 use Iamdual\Browser\Client;
-use Iamdual\Browser\Exception\ProviderErrorException;
 use PHPUnit\Framework\TestCase;
 
 final class ResponseCodeTest extends TestCase

@@ -5,7 +5,8 @@ use PHPUnit\Framework\TestCase;
 
 final class DefaultsTest extends TestCase
 {
-    private function getDefaults() {
+    private function getDefaults()
+    {
         return [
             "user_agent" => "Unicorn Browser/1.0",
             "referer" => "https://github.com/iamdual",
