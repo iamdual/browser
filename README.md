@@ -1,5 +1,5 @@
 ### Browser 🌎
-Useful and simple HTTP request class. Can be work without curl extension.
+Useful and simple HTTP request class. It can work without curl extension.
 
 **Deprecation notice:** This is an updated version of the library, and the older versions that lower than v1 is now deprecated. If you want to use the older version, check out the branch [v0.1](https://github.com/iamdual/browser/tree/v0.1). 
 
