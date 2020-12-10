@@ -3,5 +3,3 @@
 /.idea
 /vendor
 /composer.lock
-/examples/vendor
-/examples/composer.lock

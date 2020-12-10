@@ -13,8 +13,6 @@ final class ProxyTest extends TestCase
      */
     public function testProxyNative(): void
     {
-        $this->markTestIncomplete('Requires a working proxy');
-
         $result = Client::create(null, Client::PROVIDER_NATIVE)
             ->proxy(self::PROXY_ADDRESS . ":" . self::PROXY_PORT)
             ->get("https://api.ipify.org?format=json");
@@ -27,8 +25,6 @@ final class ProxyTest extends TestCase
      */
     public function testProxyCurl(): void
     {
-        $this->markTestIncomplete('Requires a working proxy');
-
         $result = Client::create(null, Client::PROVIDER_CURL)
             ->proxy(self::PROXY_ADDRESS . ":" . self::PROXY_PORT)
             ->get("https://api.ipify.org?format=json");
@@ -41,8 +37,6 @@ final class ProxyTest extends TestCase
      */
     public function testTorProxyCurl(): void
     {
-        $this->markTestIncomplete('Requires a working proxy');
-
         $result = Client::create(null, Client::PROVIDER_CURL)
             ->proxy("socks5://127.0.0.1:9050", null, CURLPROXY_SOCKS5)
             ->get("https://check.torproject.org/");

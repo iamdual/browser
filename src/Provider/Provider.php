@@ -100,6 +100,11 @@ abstract class Provider
     protected $result = null;
 
     /**
+     * @return Result
+     */
+    abstract protected function execute(): Result;
+
+    /**
      * @param array $defaults (optional)
      */
     public function __construct($defaults = [])
@@ -230,7 +235,7 @@ abstract class Provider
     }
 
     /**
-     * @param bool $option
+     * @param bool $option (optional)
      * @return $this
      */
     public function followLocation($option = true)
@@ -240,7 +245,7 @@ abstract class Provider
     }
 
     /**
-     * @param bool $option
+     * @param bool $option (optional)
      * @return $this
      */
     public function insecure($option = true)
@@ -250,28 +255,14 @@ abstract class Provider
     }
 
     /**
-     * @return Result|null
-     * @throws InvalidParameterException
-     * @throws ProviderErrorException
-     */
-    protected function execute(): ?Result
-    {
-        if (!$this->request_url) {
-            throw new InvalidParameterException("No request URL entered.");
-        }
-
-        return null;
-    }
-
-    /**
      * @param string $method
      * @param string $url
-     * @param mixed $data
-     * @return Result|null
+     * @param mixed $data (optional)
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function request(string $method, string $url, $data = null): ?Result
+    public function request(string $method, string $url, $data = null): Result
     {
         $this->request_method = $method;
         $this->request_url = $url;
@@ -283,81 +274,81 @@ abstract class Provider
 
     /**
      * @param string $url
-     * @return Result|null
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function get(string $url): ?Result
+    public function get(string $url): Result
     {
         return $this->request(self::METHOD_GET, $url);
     }
 
     /**
      * @param string $url
-     * @param mixed $data
-     * @return Result|null
+     * @param mixed $data (optional)
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function post(string $url, $data = null): ?Result
+    public function post(string $url, $data = null): Result
     {
         return $this->request(self::METHOD_POST, $url, $data);
     }
 
     /**
      * @param string $url
-     * @param mixed $data
-     * @return Result|null
+     * @param mixed $data (optional)
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function put(string $url, $data = null): ?Result
+    public function put(string $url, $data = null): Result
     {
         return $this->request(self::METHOD_PUT, $url, $data);
     }
 
     /**
      * @param string $url
-     * @param mixed $data
-     * @return Result|null
+     * @param mixed $data (optional)
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function delete(string $url, $data = null): ?Result
+    public function delete(string $url, $data = null): Result
     {
         return $this->request(self::METHOD_DELETE, $url, $data);
     }
 
     /**
      * @param string $url
-     * @param mixed $data
-     * @return Result|null
+     * @param mixed $data (optional)
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function patch(string $url, $data = null): ?Result
+    public function patch(string $url, $data = null): Result
     {
         return $this->request(self::METHOD_PATCH, $url, $data);
     }
 
     /**
      * @param string $url
-     * @return Result|null
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function head(string $url): ?Result
+    public function head(string $url): Result
     {
         return $this->request(self::METHOD_HEAD, $url);
     }
 
     /**
      * @param string $url
-     * @return Result|null
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function options(string $url): ?Result
+    public function options(string $url): Result
     {
         return $this->request(self::METHOD_OPTIONS, $url);
     }

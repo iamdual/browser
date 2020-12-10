@@ -7,14 +7,12 @@ use Iamdual\Browser\Result;
 class Curl extends Provider
 {
     /**
-     * @return Result|null
+     * @return Result
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    protected function execute(): ?Result
+    protected function execute(): Result
     {
-        parent::execute();
-
         $this->result = new Result();
 
         $curl = curl_init();
