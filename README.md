@@ -31,7 +31,10 @@ More examples in the "[examples](/examples)" directory.
 | `referer(string $referer)` | Set referer URL |
 | `cookie(mixed $data)` | Set raw cookie data |
 | `timeout(int $timeout)` | Set timeout |
+| `proxy(string $address)` | Set proxy |
+| `saveAs(string $filename)` | Set output file path |
 | `json(mixed $json)` | Set JSON data |
+| `maxRedirects(int $number)` | Set max redirects |
 | `followLocation(boolean $option)` | Set auto redirect option |
 | `insecure(boolean $option)` | Set insecure option |
 

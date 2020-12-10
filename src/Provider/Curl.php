@@ -7,11 +7,11 @@ use Iamdual\Browser\Result;
 class Curl extends Provider
 {
     /**
-     * @return Result
+     * @return Result|null
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    protected function execute()
+    protected function execute(): ?Result
     {
         parent::execute();
 
@@ -21,15 +21,6 @@ class Curl extends Provider
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_URL, $this->request_url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $this->request_method);
-
-        if ($this->request_insecure === true) {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_CAINFO, false);
-        } else {
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-        }
 
         if ($this->request_content_type) {
             $this->header("Content-Type: " . $this->request_content_type);
@@ -61,6 +52,10 @@ class Curl extends Provider
             curl_setopt($curl, CURLOPT_HTTPHEADER, $this->request_headers);
         }
 
+        if ($this->request_max_redirects) {
+            curl_setopt($curl, CURLOPT_MAXREDIRS, $this->request_max_redirects);
+        }
+
         if ($this->request_follow_location) {
             curl_setopt($curl, CURLOPT_AUTOREFERER, true);
             curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
@@ -68,6 +63,26 @@ class Curl extends Provider
 
         if ($this->request_timeout) {
             curl_setopt($curl, CURLOPT_TIMEOUT, $this->request_timeout);
+        }
+
+        if ($this->request_proxy) {
+            curl_setopt($curl, CURLOPT_PROXY, $this->request_proxy);
+            if ($this->request_proxy_auth && is_array($this->request_proxy_auth)) {
+                curl_setopt($curl, CURLOPT_PROXYUSERPWD, implode(":", $this->request_proxy_auth));
+            }
+            if ($this->request_proxy_type) {
+                curl_setopt($curl, CURLOPT_PROXYTYPE, $this->request_proxy_type);
+            }
+        }
+
+        if ($this->request_insecure === true) {
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        }
+
+        if ($this->request_save_as) {
+            $fp = fopen($this->request_save_as, "w+");
+            curl_setopt($curl, CURLOPT_FILE, $fp);
         }
 
         curl_setopt($curl, CURLOPT_HEADERFUNCTION,
@@ -103,6 +118,10 @@ class Curl extends Provider
 
         if (strcasecmp($this->result->content_type, "application/json") == 0) {
             $this->result->json = json_decode($this->result->body);
+        }
+
+        if (isset($fp)) {
+            fclose($fp);
         }
 
         curl_close($curl);

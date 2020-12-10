@@ -60,6 +60,31 @@ abstract class Provider
     protected $request_timeout = 10.0;
 
     /**
+     * @var string
+     */
+    protected $request_proxy = null;
+
+    /**
+     * @var mixed
+     */
+    protected $request_proxy_auth = null;
+
+    /**
+     * @var mixed
+     */
+    protected $request_proxy_type = null;
+
+    /**
+     * @var string
+     */
+    protected $request_save_as = null;
+
+    /**
+     * @var int
+     */
+    protected $request_max_redirects = 0;
+
+    /**
      * @var bool
      */
     protected $request_follow_location = true;
@@ -75,8 +100,7 @@ abstract class Provider
     protected $result = null;
 
     /**
-     * ProviderAbstract constructor.
-     * @param array $defaults
+     * @param array $defaults (optional)
      */
     public function __construct($defaults = [])
     {
@@ -158,6 +182,30 @@ abstract class Provider
     }
 
     /**
+     * @param string $address
+     * @param mixed $auth (optional)
+     * @param mixed $type (optional)
+     * @return $this
+     */
+    public function proxy(string $address, $auth = null, $type = null)
+    {
+        $this->request_proxy = $address;
+        $this->request_proxy_auth = $auth;
+        $this->request_proxy_type = $type;
+        return $this;
+    }
+
+    /**
+     * @param string $filename
+     * @return $this
+     */
+    public function saveAs(string $filename)
+    {
+        $this->request_save_as = $filename;
+        return $this;
+    }
+
+    /**
      * @param mixed $json
      * @return $this
      */
@@ -168,6 +216,16 @@ abstract class Provider
         }
         $this->request_data = $json;
         $this->contentType("application/json");
+        return $this;
+    }
+
+    /**
+     * @param int $number
+     * @return $this
+     */
+    public function maxRedirects(int $number)
+    {
+        $this->request_max_redirects = $number;
         return $this;
     }
 
@@ -192,11 +250,11 @@ abstract class Provider
     }
 
     /**
-     * @return Result
+     * @return Result|null
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    protected function execute()
+    protected function execute(): ?Result
     {
         if (!$this->request_url) {
             throw new InvalidParameterException("No request URL entered.");
@@ -209,11 +267,11 @@ abstract class Provider
      * @param string $method
      * @param string $url
      * @param mixed $data
-     * @return Result
+     * @return Result|null
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function request(string $method, string $url, $data = null)
+    public function request(string $method, string $url, $data = null): ?Result
     {
         $this->request_method = $method;
         $this->request_url = $url;
@@ -229,7 +287,7 @@ abstract class Provider
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function get(string $url)
+    public function get(string $url): ?Result
     {
         return $this->request(self::METHOD_GET, $url);
     }
@@ -241,7 +299,7 @@ abstract class Provider
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function post(string $url, $data = null)
+    public function post(string $url, $data = null): ?Result
     {
         return $this->request(self::METHOD_POST, $url, $data);
     }
@@ -253,7 +311,7 @@ abstract class Provider
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function put(string $url, $data = null)
+    public function put(string $url, $data = null): ?Result
     {
         return $this->request(self::METHOD_PUT, $url, $data);
     }
@@ -265,7 +323,7 @@ abstract class Provider
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function delete(string $url, $data = null)
+    public function delete(string $url, $data = null): ?Result
     {
         return $this->request(self::METHOD_DELETE, $url, $data);
     }
@@ -277,7 +335,7 @@ abstract class Provider
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function patch(string $url, $data = null)
+    public function patch(string $url, $data = null): ?Result
     {
         return $this->request(self::METHOD_PATCH, $url, $data);
     }
@@ -288,7 +346,7 @@ abstract class Provider
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function head(string $url)
+    public function head(string $url): ?Result
     {
         return $this->request(self::METHOD_HEAD, $url);
     }
@@ -299,7 +357,7 @@ abstract class Provider
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    public function options(string $url)
+    public function options(string $url): ?Result
     {
         return $this->request(self::METHOD_OPTIONS, $url);
     }

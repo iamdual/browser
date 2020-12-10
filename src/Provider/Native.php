@@ -7,11 +7,11 @@ use Iamdual\Browser\Result;
 class Native extends Provider
 {
     /**
-     * @return Result
+     * @return Result|null
      * @throws InvalidParameterException
      * @throws ProviderErrorException
      */
-    protected function execute()
+    protected function execute(): ?Result
     {
         parent::execute();
 
@@ -20,6 +20,7 @@ class Native extends Provider
         $http_params = [];
         $http_params["ignore_errors"] = 1;
         $http_params["method"] = $this->request_method;
+        $ssl_params = [];
 
         if ($this->request_content_type) {
             $this->header("Content-Type: " . $this->request_content_type);
@@ -56,6 +57,10 @@ class Native extends Provider
             $http_params["header"] = implode("\r\n", $this->request_headers);
         }
 
+        if ($this->request_max_redirects) {
+            $http_params["max_redirects"] = $this->request_max_redirects;
+        }
+
         if ($this->request_follow_location) {
             $http_params["follow_location"] = 1;
         }
@@ -64,7 +69,22 @@ class Native extends Provider
             $http_params["timeout"] = $this->request_timeout;
         }
 
-        $context = stream_context_create(["http" => $http_params]);
+        if ($this->request_proxy) {
+            $http_params["proxy"] = "tcp://" . $this->request_proxy;
+        }
+
+        if ($this->request_insecure === true) {
+            $ssl_params = [
+                "verify_peer" => false,
+                "verify_peer_name" => false,
+                "allow_self_signed" => true
+            ];
+        }
+
+        $context = stream_context_create([
+            "http" => $http_params,
+            "ssl" => $ssl_params
+        ]);
 
         $this->result->body = file_get_contents($this->request_url, false, $context);
         if ($this->result->body === false) {
@@ -73,11 +93,15 @@ class Native extends Provider
             }
         }
 
+        if ($this->request_save_as) {
+            file_put_contents($this->request_save_as, $this->result->body);
+        }
+
         if (is_array($http_response_header) && isset($http_response_header[0])) {
             $this->result->code = (int)substr($http_response_header[0], 9, 3);
 
-            foreach ($http_response_header as $line) {
-                $header = explode(":", $line, 2);
+            foreach ($http_response_header as $header_line) {
+                $header = explode(":", $header_line, 2);
                 if (isset($header[1])) {
                     $header_key = strtolower(trim($header[0]));
                     $header_val = trim($header[1]);
