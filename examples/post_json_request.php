@@ -5,10 +5,10 @@ use Iamdual\Browser\Client;
 
 try {
     $result = Client::create()
-        ->userAgent('Unicorn/1.0')
-        ->get("http://httpbin.org/headers");
+        ->json(["hello" => "world", "iam" => "dual"])
+        ->post("https://httpbin.org/post");
 
-    echo $result->json->headers->{"User-Agent"};
+    var_dump($result->body);
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

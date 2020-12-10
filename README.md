@@ -1,59 +1,22 @@
 ### Browser 🌎
-Featured and simple HTTP request class for PHP 5.4+
+Useful and simple HTTP request class. Can be work without curl extension.
 
-### Installing
+**Deprecation notice:** This is an updated version of the library and the older versions that lower than v1 is now deprecated. If you want to use the older version, check out the branch [v0.1](https://github.com/iamdual/browser/tree/v0.1). 
+
+### Requirements
+* PHP 7.2 or above
+
+### Installation
 ```
 composer require iamdual/browser
 ```
 
-### Examples
-GET request
-
+### Usage
 ```php
-$browser = new \iamdual\Browser();
-echo $browser->get("https://httpbin.org/get");
+use Iamdual\Browser\Client;
+
+$result = Client::create()->post("https://httpbin.org/post", ["hello" => "world"]);
 ```
-
-POST request
-
-```php
-$browser = new \iamdual\Browser();
-echo $browser->post("https://httpbin.org/post", array("foo" => "bar"));
-```
-
-POST JSON data
-
-```php
-$browser = new \iamdual\Browser();
-$browser->json_data(array("foo" => "bar"));
-echo $browser->post("https://httpbin.org/post");
-```
-
-PUT request
-
-```php
-$browser = new \iamdual\Browser();
-echo $browser->put("https://httpbin.org/put", array("foo" => "bar"));
-```
-
-Response code
-
-```php
-$browser = new \iamdual\Browser();
-$browser->get("https://httpbin.org/get");
-echo $browser->code;
-```
-
-Set defaults
-```php
-$defaults = array(
-    "user_agent" => "Foo Bar Browser/1.0",
-    "referer" => "https://github.com/iamdual/browser"
-);
-$browser = new Browser($defaults);
-echo $browser->get("https://httpbin.org/get");
-```
-
 More examples in the "[examples](/examples)" directory.
 
 ### Methods
@@ -61,53 +24,39 @@ More examples in the "[examples](/examples)" directory.
 #### Options
 | Name | Description |
 |---|---|
-| `referer(string $referer)` | Set referer URL |
-| `user_agent(string $user_agent)` | Set user agent |
-| `timeout(int $timeout)` | Set timeout |
 | `headers(array $headers)` | Set request headers |
 | `header(string $header)` | Append a request header |
-| `http_auth(string $username, string $password)` | Set HTTP auth credentials |
-| `cookies_enabled(boolean $option)` | Set cookies enabled option |
-| `cookie_file(string $filename)` | Set cookie filename |
+| `userAgent(string $ua)` | Set user agent header |
+| `contentType(string $type)` | Set content type header |
+| `referer(string $referer)` | Set referer URL |
 | `cookie(mixed $data)` | Set raw cookie data |
-| `cert_file(string $filename)` | Set certificate file |
-| `proxy(string $address, string $username, string $password)` | Set proxy address and/or auth credentials |
-| `set_opt(int $key, mixed $value)` | Set custom curl option |
-| `json_data(mixed $data)` | Set JSON data |
-| `auto_redirect(boolean $option)` | Set auto redirect option |
+| `timeout(int $timeout)` | Set timeout |
+| `json(mixed $json)` | Set JSON data |
+| `followLocation(boolean $option)` | Set auto redirect option |
 | `insecure(boolean $option)` | Set insecure option |
 
 #### Requests
 | Name | Description | Return |
 |---|---|---|
-| `request(string $method, string $url, mixed $data)` | Send a custom request | string |
-| `get(string $url)` | Send GET request | string |
-| `post(string $url, mixed $data)` | Send POST request | string |
-| `put(string $url, mixed $data)` | Send PUT request | string |
-| `delete(string $url, mixed $data)` | Send DELETE request | string |
-| `patch(string $url, mixed $data)` | Send PATCH request | string |
+| `request(string $method, string $url, mixed $data)` | Send a custom request | Result |
+| `get(string $url)` | Send GET request | Result |
+| `post(string $url, mixed $data)` | Send POST request | Result |
+| `put(string $url, mixed $data)` | Send PUT request | Result |
+| `delete(string $url, mixed $data)` | Send DELETE request | Result |
+| `patch(string $url, mixed $data)` | Send PATCH request | Result |
+| `head(string $url)` | Send HEAD request | Result |
+| `options(string $url)` | Send OPTIONS request | Result |
 
 ### Properties
-After a request, these properties will return needed values.
+After a request, these properties will return from `Result` object.
 
 | Name | Description | Return |
 |---|---|---|
-| `$code` | HTTP response code | int |
-| `$content_type` | Response content type | string |
+| `$body` | Response source | string |
 | `$headers` | Response headers | array |
-| `$source` | Response source | string |
+| `$code` | HTTP response code | int |
 | `$url` | Response URL | string |
-| `$info` | Response info | array |
-| `$error`<sup>\[1\]</sup> | Response error | mixed |
-| `$total_time` | Total request time | int |
-| `$json`<sup>\[2\]</sup> | Parsed JSON object | mixed |
+| `$content_type` | Response content type | string |
+| `$json`<sup>\[1\]</sup> | Parsed JSON object | mixed |
 
-
-* \[1\] It returns the error description in string, otherwise it's null.
-* \[2\] If `application/json` is the response type, it returns the JSON object, otherwise it's null.
-
-### Notes
-The [`curl extension`](https://php.net/manual/en/book.curl.php) must be installed on the server.
-
-### Contributes
-Please send pull request or open an issue if you have the feature you want.
+* \[1\] If `application/json` is the response type, it returns the JSON object, otherwise it's null.

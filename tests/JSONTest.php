@@ -1,42 +1,44 @@
 <?php
+
+use Iamdual\Browser\Client;
 use PHPUnit\Framework\TestCase;
 
 final class JSONTest extends TestCase
 {
-    public function testJSONGetRequest()
+    /**
+     * @covers \Iamdual\Browser\Client
+     * @throws \Iamdual\Browser\Exception\ProviderNotFoundException
+     */
+    public function testJSONNative(): void
     {
-        $browser = new \iamdual\Browser();
-        $browser->get("https://httpbin.org/get");
-        $this->assertNotNull($browser->json);
+        $result = Client::create(null, Client::PROVIDER_NATIVE)
+            ->json(["hello" => "world", "iam" => "dual"])
+            ->post("https://httpbin.org/post");
+
+        $this->assertEquals(
+            "application/json",
+            $result->json->headers->{"Content-Type"}
+        );
+        $this->assertEquals("world", $result->json->json->hello);
+        $this->assertEquals("dual", $result->json->json->iam);
     }
 
-    public function testJSONGetRequest2()
+    /**
+     * @covers \Iamdual\Browser\Client
+     * @throws \Iamdual\Browser\Exception\ProviderNotFoundException
+     */
+    public function testJSONCurl(): void
     {
-        $browser = new \iamdual\Browser();
-        $browser->get("https://httpbin.org/xml");
-        $this->assertNull($browser->json);
-    }
+        $result = Client::create(null, Client::PROVIDER_CURL)
+            ->json(["hello" => "world", "iam" => "dual"])
+            ->post("https://httpbin.org/post");
 
-    public function testJSONPostRequest()
-    {
-        $browser = new \iamdual\Browser();
-        $browser->post("https://httpbin.org/post", ["foo" => "bar"]);
-        $this->assertNotNull($browser->json);
-    }
+        $this->assertEquals(
+            "application/json",
+            $result->json->headers->{"Content-Type"}
+        );
 
-    public function testSetJSONData()
-    {
-        $browser = new \iamdual\Browser();
-        $browser->json_data(["foo" => "bar"]);
-        $browser->post("https://httpbin.org/post");
-        $this->assertEquals("application/json", $browser->json->headers->{"Content-Type"});
-    }
-
-    public function testSetJSONData2()
-    {
-        $browser = new \iamdual\Browser();
-        $browser->json_data('{"foo":"bar"}');
-        $browser->post("https://httpbin.org/post");
-        $this->assertEquals('{"foo":"bar"}', $browser->json->data);
+        $this->assertEquals("world", $result->json->json->hello);
+        $this->assertEquals("dual", $result->json->json->iam);
     }
 }
