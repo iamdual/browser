@@ -17,7 +17,6 @@ use Iamdual\Browser\Client;
 
 $result = Client::create()->post("https://httpbin.org/post", ["hello" => "world"]);
 ```
-More examples in the "[examples](/examples)" directory.
 
 ### Methods
 
