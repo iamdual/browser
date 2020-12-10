@@ -1,8 +1,8 @@
 <?php namespace Iamdual\Browser;
 
 use Iamdual\Browser\Exception\ProviderNotFoundException;
-use Iamdual\Browser\Provider\Native;
 use Iamdual\Browser\Provider\Curl;
+use Iamdual\Browser\Provider\Native;
 
 class Client
 {
